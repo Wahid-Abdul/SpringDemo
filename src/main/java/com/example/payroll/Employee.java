@@ -1,6 +1,5 @@
 package com.example.payroll;
 
-
 public class Employee {
 
     private String name;
@@ -13,5 +12,13 @@ public class Employee {
 
     public String getName() {
         return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String printEmployee() {
+        return String.format("Name: %s\nAddress: %s", name, address);
     }
 }
