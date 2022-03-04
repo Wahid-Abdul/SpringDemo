@@ -29,7 +29,7 @@ public class DemoApplication {
     @GetMapping("/hello2")
     @ResponseBody
     public Employee hello2() {
-        Employee emp = new Employee("anme", "adasres");
+        Employee emp = new Employee("anme", "last aasdasd", "21, street, earth");
         return emp;
     }
 
@@ -37,15 +37,14 @@ public class DemoApplication {
     @ResponseBody
     public Employee newEmployee(@RequestBody Employee newEmployee) {
 //        curl -X POST -H "Content-Type: application/json" \
-//        -d '{"name": "linuxizasdasdasdasde", "address": "linuxize@example.com"}' \
+//        -d '{"name": "SomeNameeee", "address": "linuxize@example.com"}' \
 //        http://localhost:8080/employees
 
-//        The above curl request works as expected but postman isn't budging
+//        The above curl request works as expected.
 
+
+        newEmployee.setFirstName(newEmployee.getName());
+        newEmployee.setLastName("Lorem ipsum dasdasdlkasldk");
         return newEmployee;
     }
-
-
-
-
 }
