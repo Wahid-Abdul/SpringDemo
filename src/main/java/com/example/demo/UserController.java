@@ -16,8 +16,34 @@ public class UserController {
     public @ResponseBody
     String addUser(@RequestBody User user) {
 
-
         userRepository.save(user);
         return "User mocky added";
     }
+
+    @PostMapping(path = "/validateUser")
+    @ResponseBody
+    Response validateUser(@RequestBody User user) {
+        Iterable<User> allUsers = userRepository.findAll();
+
+        for (User curUser : allUsers) {
+            System.out.println(curUser.getUsername());
+            if (user.getUsername().equals(curUser.getUsername())) {
+                if (user.getPassword().equals(curUser.getPassword())) {
+                    return buildMessageResponse("0", "Login successful");
+                }
+                return buildMessageResponse("FAIL_1", "Password incorrect");
+            }
+        }
+        return buildMessageResponse("FAIL_2", "Login unsuccessful");
+    }
+
+    public Response buildMessageResponse(String infoId, String message) {
+        Response response = new Response(infoId);
+
+        Body body = new Body();
+        body.setMessage(message);
+        response.setBody(body);
+        return response;
+    }
+
 }
