@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.payroll.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,20 +24,25 @@ public class MainController {
 
     @PostMapping(path = "/updateTasks") // Map ONLY POST Requests
     public @ResponseBody
-    String updateTasks(@RequestBody TodoItem todoItems[]) {
+    Response updateTasks(@RequestBody TodoItem[] todoItems) {
         // @ResponseBody means the returned String is the response, not a view name
-
         for (int i = 0; i < todoItems.length; i++) {
             todoItemRepository.save(todoItems[i]);
         }
-        return String.format("Updated %s items", todoItems.length);
+
+        return buildMessageResponse("0", String.format("Updated %s items", todoItems.length));
+
     }
 
     @GetMapping(path = "/all")
     public @ResponseBody
-    Iterable<TodoItem> getAllTasks() {
+    Response getAllTasks() {
         // This returns a JSON or XML with the users
-        return todoItemRepository.findAll();
+        Response response = buildMessageResponse("0", "We've given you all we got");
+        Body body = response.getBody();
+        body.setTodoList(todoItemRepository.findAll());
+        response.setBody(body);
+        return response;
     }
 
     @PostMapping(path = "/delete") // Map ONLY POST Requests
@@ -65,5 +69,14 @@ public class MainController {
             System.out.println(error);
             return "Something went wrong";
         }
+    }
+
+    private Response buildMessageResponse(String infoId, String message) {
+        Response response = new Response(infoId);
+
+        Body body = new Body();
+        body.setMessage(message);
+        response.setBody(body);
+        return response;
     }
 }
