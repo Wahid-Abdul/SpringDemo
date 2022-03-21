@@ -14,10 +14,14 @@ public class UserController {
 
     @PostMapping(path = "/add")
     public @ResponseBody
-    String addUser(@RequestBody User user) {
+    Response addUser(@RequestBody User user) {
 
-        userRepository.save(user);
-        return "User mocky added";
+        try {
+            userRepository.save(user);
+            return buildMessageResponse("0", String.format("User %s added successfully", user.getUsername()));
+        } catch (Exception e) {
+            return buildMessageResponse("FAIL_3", "Something went wrong");
+        }
     }
 
     @PostMapping(path = "/validateUser")
