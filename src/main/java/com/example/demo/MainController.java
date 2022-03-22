@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class MainController {
 
     @Autowired
-
     private TodoItemRepository todoItemRepository;
-
     @PostMapping(path = "/add") // Map ONLY POST Requests
     public @ResponseBody
     String addTask(@RequestBody TodoItem todoItem) {
@@ -45,6 +43,19 @@ public class MainController {
         return response;
     }
 
+    @PostMapping(path = "/myTodos")
+    public @ResponseBody
+    Response getMyTasks(@RequestBody TodoItem todoItem) {
+
+        Response response = buildMessageResponse("0", "These are all yours.");
+
+        Body body = response.getBody();
+        body.setTodoList(todoItemRepository.findByUsername(todoItem.getUsername()));
+
+        response.setBody(body);
+        return response;
+    }
+
     @PostMapping(path = "/delete") // Map ONLY POST Requests
     public @ResponseBody
     String deleteOneItem(@RequestBody TodoItem todoItem) {
@@ -70,7 +81,6 @@ public class MainController {
             return "Something went wrong";
         }
     }
-
     private Response buildMessageResponse(String infoId, String message) {
         Response response = new Response(infoId);
 

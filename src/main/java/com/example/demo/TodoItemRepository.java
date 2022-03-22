@@ -9,4 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TodoItemRepository extends CrudRepository<TodoItem, Integer> {
 
+    public Iterable<TodoItem> findByUsername(String username);
+
 }

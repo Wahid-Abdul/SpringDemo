@@ -30,7 +30,6 @@ public class UserController {
         Iterable<User> allUsers = userRepository.findAll();
 
         for (User curUser : allUsers) {
-            System.out.println(curUser.getUsername());
             if (user.getUsername().equals(curUser.getUsername())) {
                 if (user.getPassword().equals(curUser.getPassword())) {
                     return buildMessageResponse("0", "Login successful");
