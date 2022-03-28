@@ -29,7 +29,6 @@ public class MainController {
         }
 
         return buildMessageResponse("0", String.format("Updated %s items", todoItems.length));
-
     }
 
     @GetMapping(path = "/all")
@@ -81,6 +80,26 @@ public class MainController {
             return "Something went wrong";
         }
     }
+
+    @PostMapping(path = "/deleteTasks")
+    public @ResponseBody
+    Response deleteTasks(@RequestBody TodoItem[] todoItems) {
+
+        try {
+
+            for (int i = 0; i < todoItems.length; i++) {
+                todoItemRepository.deleteById(todoItems[i].getId());
+            }
+
+            return buildMessageResponse("0", String.format("Deleted %s items", todoItems.length));
+        } catch (Exception error) {
+            System.out.println(error);
+            return buildMessageResponse("ERROR 4", "Deletion went wrong");
+        }
+
+
+    }
+
     private Response buildMessageResponse(String infoId, String message) {
         Response response = new Response(infoId);
 
