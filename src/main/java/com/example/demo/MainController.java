@@ -88,7 +88,7 @@ public class MainController {
         try {
 
             for (int i = 0; i < todoItems.length; i++) {
-                todoItemRepository.deleteById(todoItems[i].getId());
+                todoItemRepository.deleteByParameters(todoItems[i].getUsername(), todoItems[i].getContent());
             }
 
             return buildMessageResponse("0", String.format("Deleted %s items", todoItems.length));
